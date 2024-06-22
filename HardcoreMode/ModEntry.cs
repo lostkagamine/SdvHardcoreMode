@@ -25,6 +25,24 @@ public class ModEntry : Mod
             }
         };
     }
+    
+    private void EraseFile(string saveName)
+    {
+        Monitor.Log($"Erasing save file '{saveName}'!");
+        
+        var path = Path.Combine(Program.GetSavesFolder(), saveName);
+        if (Directory.Exists(path))
+            Directory.Delete(path, true);
+        
+        // hey concernedape what the fuck
+        // (do note, the below code is in the game)
+        var c = 50;
+        while (c > 0 && Directory.Exists(path))
+        {
+            c--;
+            Thread.Sleep(100);
+        }
+    }
 
     public void OnPlayerIsCheating()
     {
@@ -32,8 +50,7 @@ public class ModEntry : Mod
         var name = Constants.SaveFolderName!;
         Game1.ExitToTitle(() =>
         {
-            Monitor.Log("Erasing save file...");
-            SaveManager.EraseFile(name);
+            EraseFile(name);
         });
     }
 }

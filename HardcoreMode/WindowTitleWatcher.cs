@@ -30,7 +30,7 @@ public class WindowTitleWatcher
 
     private static void ScanWindows()
     {
-        var wins = Native.FindSomeWindows(hwnd =>
+        var wins = Native.FindFilteredWindows(hwnd =>
         {
             var text = Native.GetWindowTitle(hwnd);
             return text.Contains("Stardew Valley Wiki");
@@ -39,6 +39,9 @@ public class WindowTitleWatcher
         var anyPresent = wins.Count > 0;
         if (anyPresent)
         {
+            // don't let the user see it, actually
+            wins.ForEach(Native.CloseWindow);
+            
             ModEntry.Instance!.OnPlayerIsCheating();
         }
     }

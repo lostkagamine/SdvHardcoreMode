@@ -10,10 +10,18 @@ public unsafe class Native
     public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, nint lparam);
     public delegate bool EnumWindowsProc(nint hwnd, nint lparam);
 
-    [DllImport("user32.dll", CharSet=CharSet.Unicode)]
-    public static extern bool GetWindowText(nint hwnd, StringBuilder text, int nmaxcount);
-    [DllImport("user32.dll", CharSet=CharSet.Unicode)]
-    public static extern int GetWindowTextLength(nint hwnd);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    static extern bool GetWindowText(nint hwnd, StringBuilder text, int nmaxcount);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    static extern int GetWindowTextLength(nint hwnd);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    static extern bool PostMessage(nint hwnd, uint msg, nint wparam, nint lparam);
+
+    public static void CloseWindow(nint hwnd)
+    {
+        // post a WM_CLOSE (0x10) to the hwnd, this is equivalent to clicking the X
+        PostMessage(hwnd, 0x10, 0, 0);
+    }
 
     public static string GetWindowTitle(nint hwnd)
     {
@@ -24,7 +32,7 @@ public unsafe class Native
         return str.ToString();
     }
 
-    public static List<nint> FindSomeWindows(Func<nint, bool> filter)
+    public static List<nint> FindFilteredWindows(Func<nint, bool> filter)
     {
         var list = new List<nint>();
 
