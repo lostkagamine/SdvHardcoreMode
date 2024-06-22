@@ -1,0 +1,10 @@
+{
+  "Name": "Hardcore Mode",
+  "Author": "Nightshade System",
+  "Version": "1.0.0",
+  "Description": "Deletes your save file if it detects you have the wiki open in a browser window.",
+  "UniqueID": "NightshadeSystem.SdvHardcoreMode",
+  "EntryDll": "HardcoreMode.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": []
+}
